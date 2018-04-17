@@ -1,0 +1,80 @@
+Daftarkan: goo.gl/XaijR1
+
+0. Masuk ke katacoda -> learn -> docker playground
+1. mkdir pt5
+2. cd pt5
+
+3. Buat file Dockerfile dengan perintah : nano Dockerfile 
+(jika belum ada nano, install dulu dengan apt)
+
+4. Copy paste konten berikut :
+
+FROM alpine
+RUN apk add --update lighttpd
+COPY etc/lighttpd/* /etc/lighttpd/
+COPY var/www/html/* /var/www/html/
+EXPOSE 80
+CMD ["lighttpd","-D","-f","/etc/lighttpd/lighttpd.conf"]
+
+5. mkdir -p etc/lighttpd
+6. mkdir -p var/www/html
+
+7. nano etc/lighttpd/lighttpd.conf
+
+8. Copy paste konten:
+server.document-root = "/var/www/html/"
+server.port = 80
+index-file.names = ("index.html")
+mimetype.assign = (
+ ".html" => "text/html",
+ ".jpg" => "image/jpeg"
+ )
+
+9. nano var/www/html/index.html
+
+10. konten (ganti nama, nim, dan gambar dengan photo kalian):
+<html>
+<head>Praktik cloud</head>
+<body>
+<h2>Praktikum Teknologi Cloud &hearts;</h2>
+<p>&nbsp;</p>
+<p>Pertemuan&nbsp;4 praktikum teknologi cloud&nbsp;</p>
+<table cellpadding="10">
+<tbody>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td><img src="https://pbs.twimg.com/profile_images/697489771623415808/2FNV_JrH_400x400.jpg" /></td>
+</tr>
+<tr>
+<td colspan="3"><strong>Detail peserta perkuliahan:</strong>
+<ol>
+<li>NAMA :</li>
+<li>NIM:&nbsp;</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Review materi hari ini adalah tentang docker image.</p>
+</body>
+</html>
+
+11. docker build -t tcc5:v1 .
+12. docker run -d --name web -p 80:80 tcc5:v1
+
+13. docker login
+
+14. docker tag tcc5:v1 akundockerhub/tcc5:v1
+15. docker push akundockerhub/tcc5:v1
+
+
+### troubleshooting
+docker build -t tcc5:v2 .
+docker ps
+- akan muncul id, misal 77888hhy
+
+docker stop 778
+docker run -d --name web2 -p 80:80 tcc5:v2
